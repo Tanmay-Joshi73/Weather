@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
-    <link rel="stylesheet" href="./public/weather.css">
+    <link rel="stylesheet" href="./public/css/weather.css">
     <script defer src="script.js"></script>
 </head>
 
 <body>
     <div class="container">
         <h1>Weather App</h1>
-        <form id="search-form" method="post" action="/Fetch">
-            <input type="text" id="city-input" placeholder="Enter city name" required>
+        <form id="search-form" method="post" onsubmit="return Send(event)">
+            <input type="text" id="city-input" name='city' placeholder="Enter city name" required>
             <button type="submit">Search</button>
         </form>
         <div class="weather-info">
@@ -22,4 +22,22 @@
         </div>
     </div>
 </body>
+<script>
+async function Send(event){
+    event.preventDefault()
+    const responce=await fetch('http://localhost:8000/Fetch',{
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json'
+        }
+    })
+    const data=await responce.json()
+    if(data.ok){
+        console.log('data is okay')
+    }
+    else{
+        console.log('data is not okay')
+    }
+}
+</script>
 </html>
