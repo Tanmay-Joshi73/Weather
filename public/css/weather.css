@@ -50,6 +50,6 @@ button:hover {
     font-size: 1.2em;
 }
 
-#city, #temperature, #condition {
+#city, #temperature, #Humidity {
     font-weight: bold;
 }

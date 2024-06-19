@@ -13,21 +13,26 @@ exports.render = async (req, res) => {
 }
 
 exports.fetch = async (req, res) => {
+    try{
     const { city } = req.body
     
     const Info = API.replace('{city name}', city)
 
     const ans = await axios.get(Info)
         .then(response => {
+            // console.log(response)
             const data = response.data
             return data
         });
-
+   
     const CityName = ans.name
     const Temp = ''+ ans.main.temp
     const Humidity=''+ans.main.humidity
     const Details={CityName:CityName,Tempreture:Temp,Humidity:Humidity}
     res.setHeader("Content-Type","application/json")
     res.send(Details)
-
+    }
+   catch(err){
+    res.send({CityName:'No Such City Found',Tempreture:null,Humidity:null})
+   }
 }
