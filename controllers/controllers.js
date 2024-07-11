@@ -1,22 +1,22 @@
 const express = require('express')
 const axios = require('axios');
-
+const {CatchAsync}=require('../controllers/ErrorController')
 const fs = require('fs');
 let file = fs.readFileSync(`${__dirname}/../weather.html`, 'utf-8')
 const API=process.env.API_Info
 
-exports.render = async (req, res) => {
-    res.send(file)
+exports.render = CatchAsync(async (req,res,next) => {
+   await res.send(file)
    
-}
-exports.redirect=async(req,res)=>{
-    res.redirect('/show')
-}
+})
+exports.redirect=CatchAsync(async(req,res,next)=>{
+    await res.redirect('/show')
+})
 exports.fetch = async (req, res) => {
     try{
     const { city } = req.body
     const Info = API.replace('{city name}', city)
-    console.log(Info)
+   
     const ans = await axios.get(Info)
         .then(response => {
             console.log(response)
