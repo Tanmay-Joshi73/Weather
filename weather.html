@@ -23,34 +23,40 @@
     </div>
 </body>
 <script>
-    function send(event){
-    const city=document.getElementById('city-input').value
-    const citySpace=document.getElementById('city')
-    let res;
-    event.preventDefault()
-    const req=new XMLHttpRequest()
-      req.open('POST','http://localhost:8000/Fetch',true)
-    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    req.send(`city=${city}`)
+  async function send(event) {
+    event.preventDefault();
     
-    req.onreadystatechange=()=>{
-        console.log(req.readyState)
-            if(req.readyState==4){
-            
-              res=JSON.parse(req.response)
-              
-              let cityname=res.CityName
-              let Temp=res.Tempreture
-              let Humd=res.Humidity
-              citySpace.innerText=cityname
-              temperature.innerText=Temp
-              Humidity.innerText=Humd
-              console.log(res.Error)
-            }
-
-    } 
- 
+    const city = document.getElementById('city-input').value;
+    const citySpace = document.getElementById('city');
+    const temperature = document.getElementById('temperature');
+    const humidity = document.getElementById('Humidity');
+    
+    try {
+        const response = await fetch('http://localhost:8000/Fetch', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `city=${encodeURIComponent(city)}`
+        });
         
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const res = await response.json();
+        const cityname = res.CityName;
+        const Temp = res.Tempreture;
+        const Humd = res.Humidity;
+        citySpace.innerText = cityname;
+        temperature.innerText = Temp;
+        humidity.innerText = Humd;
+        
+    } catch (err) {
+        console.error('Fetch error:', err);
+        alert('An error occurred while fetching the data.');
     }
+}
+
 </script>
 </html>

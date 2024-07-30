@@ -16,10 +16,9 @@ exports.fetch = async (req, res) => {
     try{
     const { city } = req.body
     const Info = API.replace('{city name}', city)
-   
     const ans = await axios.get(Info)
         .then(response => {
-            console.log(response)
+            // console.log(response)
             const data = response.data
             return data
         });
